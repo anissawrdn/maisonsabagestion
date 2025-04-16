@@ -205,7 +205,7 @@ if module_actif == "Achats":
     
     if produit_supp:
             filtres = 
-        df_achats[df_achats["Produit"].str.contains(produit_supp, case=False)]
+df_achats[df_achats["Produit"].str.contains(produit_supp, case=False)]
         
     if not filtres.empty:
         df_achats["Date"] = pd.to_datetime(df_achats["Date"], errors=("coerce") 
