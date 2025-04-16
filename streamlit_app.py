@@ -201,7 +201,7 @@ if module_actif == "Achats":
     st.markdown("---")
     st.subheader("Supprimer un achat")
 
-        produit_supp = st.text_input("Nom du produit à supprimer")
+    produit_supp = st.text_input("Nom du produit à supprimer")
 
     if produit_supp:
             filtres =
