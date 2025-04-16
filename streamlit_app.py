@@ -45,7 +45,7 @@ if module_actif == "Ventes":
         }
     with st.expander("Gérer la liste des plats"):
         st.write("Plats disponibles :")
-      for plat, prix in liste_plats.items():
+        for plat, prix in liste_plats.items():
             st.write(f"- {plat} : {prix} €") 
         col1, col2 = st.columns(2)
         with col1:
