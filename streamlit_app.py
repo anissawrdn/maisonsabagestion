@@ -199,27 +199,30 @@ if module_actif == "Achats":
         st.info("Aucun achat enregistré pour le moment.")
         
     st.markdown("---")
-    st.subheader("Supprimer un achat")
+        st.subheader("Supprimer un achat")
 
-produit_supp = st.text_input("Nom du produit à supprimer")
+        produit_supp = st.text_input("Nom du produit à supprimer")
 
-if produit_supp:
-        filtres =
-    df_achats[df_achats["Produit"].str.contains(produit_supp, case=False)]
-    if not filtres.empty :
-        index_choisi = st.selectbox(
-            "Sélectionne la ligne à supprimer",
-            filtres.index,
-            format_func=lambda i: f"{filtres.at[i, 'Date']} -
-            {filtres.at[i, 'Produit']} - {filtres.at[i, 'Fournisseur']}
-        )
-
-        if st.button("Supprimer cette ligne"):
-            df_achats = df_achats.drop(index_choisi)
-            df_achat.to_csv(achats__file, index=False)
-            st.success("Achat supprimé avec succès")
-    else: 
-        st.warning("Aucun achat trouvé avec ce nom")
+    if produit_supp:
+            filtres =
+        df_achats[df_achats["Produit"].str.contains(produit_supp, case=False)]
+        
+        if not filtres.empty :
+            index_choisi = st.selectbox(
+                "Sélectionne la ligne à supprimer",
+                filtres.index,
+                format_func=lambda i: f"{filtres.at[i, 'Date']} -
+                {filtres.at[i, 'Produit']} - {filtres.at[i, 'Fournisseur']}
+            )
+            With st.form("form_suppr"):
+                
+                submit_suppr = st.form_submit_button("Supprimer cette ligne")
+                if submit_suppr :
+                    df_achats = df_achats.drop(index_choisi)
+                df_achat.to_csv(achats__file, index=False)
+                st.success("Achat supprimé avec succès")
+        else: 
+            st.warning("Aucun achat trouvé avec ce nom")
 
 
 # Module Stock & Inventaire
