@@ -207,7 +207,8 @@ if module_actif == "Achats":
             filtres = df_achats[df_achats["Produit"].str.contains(produit_supp, case=False)]
         
     if not filtres.empty:
-        df_achats["Date"] = pd.to_datetime(df_achats["Date"],errors=("coerce") # Sécurité pour les dates
+        df_achats["Date"] = pd.to_datetime(df_achats["Date"],errors=("coerce") 
+                                           # Sécurité pour les dates
         index_choisi = st.selectbox(
             "Sélectionne la ligne à supprimer",
             filtres.index,
