@@ -207,24 +207,24 @@ if module_actif == "Achats":
             filtres = df_achats[df_achats["Produit"].str.contains(produit_supp, case=False)]
         
     if not filtres.empty:
-        df_achats["Date"] = pd.to_datetime(df_achats["Date"],errors=("coerce") 
+        df_achats["Date"] = pd.to_datetime(df_achats["Date"], errors=("coerce") 
                                            # Sécurité pour les dates
         index_choisi = st.selectbox(
             "Sélectionne la ligne à supprimer",
             filtres.index,
-            format_func=lambda i: f"{filtres.at[i, "Date"]} - 
-            {filtres.at[i, "Produit"]} - {filtres.at[i, "Fournisseur"]}
+            format_func=lambda i: f"{str(filtres.at[i, 'Date'])} - 
+            {str(filtres.at[i, 'Produit'])} - {str(filtres.at[i, 'Fournisseur'])}
         )
-        With st.form("form_suppr"):
-            
+        
+        with st.form("form_suppr"):
+        
             submit_suppr = st.form_submit_button("Supprimer cette ligne")
-            if submit_suppr :
-                df_achats = df_achats.drop(index_choisi)
-                df_achat.to_csv(achats__file, index=False)
-                st.success("Achat supprimé avec succès")
+                if submit_suppr :
+                    df_achats = df_achats.drop(index_choisi)
+                    df_achat.to_csv(achats_file, index=False)
+                    st.success("Achat supprimé avec succès")
     else: 
         st.warning("Aucun achat trouvé avec ce nom")
-
 
 # Module Stock & Inventaire
 if module_actif == "Stock & Inventaire":
