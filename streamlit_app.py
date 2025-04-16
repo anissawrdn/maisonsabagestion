@@ -201,31 +201,31 @@ if module_actif == "Achats":
     st.markdown("---")
     st.subheader("Supprimer un achat")
     
-    produit_supp = st.text_input("Nom du produit à supprimer")
+    #produit_supp = st.text_input("Nom du produit à supprimer")
     
-    if produit_supp:
-            filtres=
-        df_achats[df_achats["Produit"].str.contains(produit_supp, case=False)]
+    #if produit_supp:
+            #filtres=
+       # df_achats[df_achats["Produit"].str.contains(produit_supp, case=False)]
         
-        if not filtres.empty:
-            df_achats["Date"] = pd.to_datetime(df_achats["Date"], errors=("coerce") 
+       # if not filtres.empty:
+           # df_achats["Date"] = pd.to_datetime(df_achats["Date"], errors=("coerce") 
                                            # Sécurité pour les dates
-        index_choisi = st.selectbox(
-            "Sélectionne la ligne à supprimer",
-            filtres.index,
-            format_func=lambda i: f"{str(filtres.at[i, 'Date'])} - 
-            {str(filtres.at[i, 'Produit'])} - {str(filtres.at[i, 'Fournisseur'])}
-        )
+        #index_choisi = st.selectbox(
+            #"Sélectionne la ligne à supprimer",
+           # filtres.index,
+            #format_func=lambda i: f"{str(filtres.at[i, 'Date'])} - 
+            #{str(filtres.at[i, 'Produit'])} - {str(filtres.at[i, 'Fournisseur'])}
+        #)
         
-        with st.form("form_suppr"):
+        #with st.form("form_suppr"):
         
-            submit_suppr = st.form_submit_button("Supprimer cette ligne")
-                if submit_suppr :
-                    df_achats = df_achats.drop(index_choisi)
-                    df_achat.to_csv(achats_file, index=False)
-                    st.success("Achat supprimé avec succès")
-    else: 
-        st.warning("Aucun achat trouvé avec ce nom")
+            #submit_suppr = st.form_submit_button("Supprimer cette ligne")
+               # if submit_suppr :
+                   # df_achats = df_achats.drop(index_choisi)
+                   # df_achat.to_csv(achats_file, index=False)
+                   # st.success("Achat supprimé avec succès")
+   #else: 
+       # st.warning("Aucun achat trouvé avec ce nom")
 
 # Module Stock & Inventaire
 if module_actif == "Stock & Inventaire":
