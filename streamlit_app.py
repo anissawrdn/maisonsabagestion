@@ -476,7 +476,7 @@ if module_actif == "Trésorerie":
  
 # Module Comptes bancaires
 if module_actif == "Comptes bancaires":
-   st.subheader("Suivi des comptes bancaires")
+    st.subheader("Suivi des comptes bancaires")
     comptes_file = "comptes_bancaires.csv"
  
     if os.path.exists(comptes_file):
