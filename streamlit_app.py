@@ -206,22 +206,22 @@ if module_actif == "Achats":
     if produit_supp:
             filtres = df_achats[df_achats["Produit"].str.contains(produit_supp, case=False)]
         
-        if not filtres.empty :
-            index_choisi = st.selectbox(
-                "Sélectionne la ligne à supprimer",
-                filtres.index,
-                format_func=lambda i: f"{filtres.at[i, 'Date']} -
-                {filtres.at[i, 'Produit']} - {filtres.at[i, 'Fournisseur']}
-            )
-            With st.form("form_suppr"):
-                
-                submit_suppr = st.form_submit_button("Supprimer cette ligne")
-                if submit_suppr :
-                    df_achats = df_achats.drop(index_choisi)
+    if not filtres.empty :
+        index_choisi = st.selectbox(
+            "Sélectionne la ligne à supprimer",
+            filtres.index,
+            format_func=lambda i: f"{filtres.at[i, 'Date']} -
+            {filtres.at[i, 'Produit']} - {filtres.at[i, 'Fournisseur']}
+        )
+        With st.form("form_suppr"):
+            
+            submit_suppr = st.form_submit_button("Supprimer cette ligne")
+            if submit_suppr :
+                df_achats = df_achats.drop(index_choisi)
                 df_achat.to_csv(achats__file, index=False)
                 st.success("Achat supprimé avec succès")
-        else: 
-            st.warning("Aucun achat trouvé avec ce nom")
+    else: 
+        st.warning("Aucun achat trouvé avec ce nom")
 
 
 # Module Stock & Inventaire
