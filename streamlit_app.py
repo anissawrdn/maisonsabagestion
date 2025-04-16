@@ -449,8 +449,7 @@ if module_actif == "Trésorerie":
             type_mvt = st.selectbox("Type", ["Entrée", "Sortie"])
             mode = st.selectbox("Mode de paiement", ["Espèces", "Carte bancaire", "Virement", "Chèque", "Autre"])
             categorie = st.selectbox("Catégorie", ["Divers", "Personnel", "Vente", "Achat", "Autre"])
-
-         submit_treso = st.form_submit_button("Ajouter le mouvement")
+    submit_treso = st.form_submit_button("Ajouter le mouvement")
         if submit_treso:
             ajout = {
                 "Date": pd.to_datetime(date),
