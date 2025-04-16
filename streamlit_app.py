@@ -210,8 +210,8 @@ if module_actif == "Achats":
         index_choisi = st.selectbox(
             "Sélectionne la ligne à supprimer",
             filtres.index,
-            format_func=lambda i: f"{filtres.at[i, 'Date']} -
-            {filtres.at[i, 'Produit']} - {filtres.at[i, 'Fournisseur']}
+            format_func=lambda i: f"{filtres.at[i, "Date"]} -
+            {filtres.at[i, "Produit"]} - {filtres.at[i, "Fournisseur"]}
         )
         With st.form("form_suppr"):
             
