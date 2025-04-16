@@ -188,9 +188,13 @@ if module_actif == "Achats":
         csv_export = df_achats.to_csv(index=False).encode('utf-8')
         st.download_button("Télécharger l'historique (CSV)", data=csv_export, file_name="achats_maison_saba.csv", mime="text/csv")
         st.markdown("---")
-        st.subheader("Vue par catégorie")
-        total_par_categorie = df_achats.groupby("Catégorie")["Total"].sum().sort_values(ascending=False)
+        #st.subheader("Vue par catégorie")
+        #total_par_categorie = df_achats.groupby("Catégorie")["Total"].sum().sort_values(ascending=False)
+        #st.bar_chart(total_par_categorie)
+        st.markdown("### Vue par catégorie")
+        st.markdown(f"**Montant total des achats : {total_par_categorie.sum():.2f} €**")
         st.bar_chart(total_par_categorie)
+        
     else:
         st.info("Aucun achat enregistré pour le moment.")
 
