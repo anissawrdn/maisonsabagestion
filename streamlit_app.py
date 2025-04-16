@@ -199,7 +199,7 @@ if module_actif == "Achats":
         st.info("Aucun achat enregistré pour le moment.")
         
     st.markdown("---")
-        st.subheader("Supprimer un achat")
+    st.subheader("Supprimer un achat")
 
         produit_supp = st.text_input("Nom du produit à supprimer")
 
