@@ -204,7 +204,7 @@ if module_actif == "Achats":
     produit_supp = st.text_input("Nom du produit à supprimer")
 
     if produit_supp:
-            filtres =
+            filtres = 
         df_achats[df_achats["Produit"].str.contains(produit_supp, case=False)]
         
         if not filtres.empty :
