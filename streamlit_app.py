@@ -283,13 +283,13 @@ if module_actif == "Achats":
                 df_achats.at[achat_selectionne, "Catégorie"] = categorie
                 df_achats.to_csv(achats_file, index=False)
                 st.success("Achat modifié avec succès !")
-                st.experimental_set_query_params(refresh="true")
+                st.query_params(refresh="true")
 
             if submit_suppression:
                 df_achats = df_achats.drop(achat_selectionne)
                 df_achats.to_csv(achats_file, index=False)
                 st.success("Achat supprimé avec succès !")
-                st.experimental_set_query_params(refresh="true")
+                st.query_params(refresh="true")
     else:
         st.info("Aucun achat enregistré pour le moment.")
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
