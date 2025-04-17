@@ -182,24 +182,24 @@ if module_actif == "Achats":
         st.write(f"**Montant total : {total:.2f} €**")
         submit = st.form_submit_button("Ajouter l'achat")
 
-        if submit:
-            if not fournisseur or not produit or quantite == 0 or not unite ou prix_unitaire == 0:
-                st.error("Tous les champs doivent être remplis pour ajouter un achat.")
-            else:
-                nouvel_achat = {
-                    "Date": str(date_achat),
-                    "Fournisseur": fournisseur,
-                    "Produit": produit,
-                    "Quantité": quantite,
-                    "Unité": unite,
-                    "Prix unitaire": prix_unitaire,
-                    "Total": total,
-                    "Mode de paiement": mode_paiement,
-                    "Catégorie": categorie
-                }
-                df_achats = pd.concat([df_achats, pd.DataFrame([nouvel_achat])], ignore_index=True)
-                df_achats.to_csv(achats_file, index=False)
-                st.success("Achat ajouté avec succès !")
+    if submit:
+        if not fournisseur or not produit or quantite == 0 or not unite ou prix_unitaire == 0:
+            st.error("Tous les champs doivent être remplis pour ajouter un achat.")
+        else:
+            nouvel_achat = {
+                "Date": str(date_achat),
+                "Fournisseur": fournisseur,
+                "Produit": produit,
+                "Quantité": quantite,
+                "Unité": unite,
+                "Prix unitaire": prix_unitaire,
+                "Total": total,
+                "Mode de paiement": mode_paiement,
+                "Catégorie": categorie
+            }
+            df_achats = pd.concat([df_achats, pd.DataFrame([nouvel_achat])], ignore_index=True)
+            df_achats.to_csv(achats_file, index=False)
+            st.success("Achat ajouté avec succès !")
     
     st.markdown("---")
     st.subheader("Historique des achats")
