@@ -159,7 +159,7 @@ if module_actif == "Achats":
             unite = st.text_input("Unité (g, kg, L...)")
             prix_unitaire = st.number_input("Prix unitaire (€)", min_value=0.0, step=0.1)
         mode_paiement = st.selectbox("Mode de paiement", ["Carte bancaire", "Virement", "Chèque", "Espèces", "Autre"])
-        categorie = st.selectbox("Catégorie", ["Matières premières", "Emballages", "Boissons", "Décoration", "Matériel", "Autre"])
+        categorie = st.selectbox("Catégorie", ["Matières premières", "Emballages", "Boissons", "Décoration", "Autre"])
         total = quantite * prix_unitaire
         st.write(f"**Montant total : {total:.2f} €**")
         submit = st.form_submit_button("Ajouter l'achat")
@@ -197,8 +197,22 @@ if module_actif == "Achats":
         st.subheader("Vue par catégorie")
         total_par_categorie = df_achats.groupby("Catégorie")["Total"].sum().sort_values(ascending=False)
 
-        st.bar_chart(total_par_categorie)
-        st.write(total_par_categorie)
+        # Create a bar chart with totals displayed on top of each bar
+        fig, ax = plt.subplots()
+        bars = ax.bar(total_par_categorie.index, total_par_categorie.values)
+        ax.set_ylabel('Total (€)')
+        ax.set_title('Total des achats par catégorie')
+
+        # Add totals on top of each bar
+        for bar in bars:
+            height = bar.get_height()
+            ax.annotate(f'{height:.2f} €',
+                        xy=(bar.get_x() + bar.get_width() / 2, height),
+                        xytext=(0, 3),  # 3 points vertical offset
+                        textcoords="offset points",
+                        ha='center', va='bottom')
+
+        st.pyplot(fig)
     else:
         st.info("Aucun achat enregistré pour le moment.")
 
@@ -243,12 +257,13 @@ if module_actif == "Achats":
                         st.success("Achat modifié avec succès !")
 
             if st.button("Supprimer l'achat"):
-                df_achats = df_achats.drop(achat_selectionne)
-                df_achats.to_csv(achats_file, index=False)
-                st.success("Achat supprimé avec succès !")
+                if st.button("Confirmer la suppression"):
+                    df_achats = df_achats.drop(achat_selectionne)
+                    df_achats.to_csv(achats_file, index=False)
+                    st.success("Achat supprimé avec succès !")
     else:
         st.info("Aucun achat enregistré pour le moment.")
-
+        
 # Module Stock & Inventaire
 if module_actif == "Stock & Inventaire":
     ventes_file ="ventes.csv"
