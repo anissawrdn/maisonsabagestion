@@ -154,10 +154,7 @@ if module_actif == "Ventes":
 # Module Achats
 if module_actif == "Achats":
     st.subheader("Enregistrement des achats")
-    service = connect_to_google_sheets()
-    sheet = service.spreadsheets()
-    #st.subheader("Enregistrement des achats")
-    #achats_file = "achats.csv"
+    achats_file = "achats.csv"
     if os.path.exists(achats_file):
         df_achats = pd.read_csv(achats_file)
         df_achats["Date"] = pd.to_datetime(df_achats["Date"], errors="coerce")
@@ -165,48 +162,9 @@ if module_actif == "Achats":
         df_achats = pd.DataFrame(columns=[
             "Date", "Fournisseur", "Produit", "Quantité", "Unité",
             "Prix unitaire", "Total", "Mode de paiement", "Catégorie"
-        ])  
-    # Définir le nom du fichier
-    achats_file = "achats.csv"
-
-# Créer un DataFrame vide avec les colonnes requises
-    #df_achats = pd.DataFrame(columns=[
-        #"Date", "Fournisseur", "Produit", "Quantité", "Unité",
-        #"Prix unitaire", "Total", "Mode de paiement", "Catégorie"
-#])
-
-# Sauvegarder le DataFrame vide dans le fichier CSV, ce qui vide son contenu
-#    df_achats.to_csv(achats_file, index=False)
-
- #   print(f"Le contenu de {achats_file} a été vidé avec succès.")
-  #  st.subheader("Enregistrement des achats")
-   # achats_file = "achats.csv"
-    #if os.path.exists(achats_file):
-     #   df_achats = pd.read_csv(achats_file)
-      #  df_achats["Date"] = pd.to_datetime(df_achats["Date"], errors="coerce")
-    #else:
-     #   df_achats = pd.DataFrame(columns=[
-      #      "Date", "Fournisseur", "Produit", "Quantité", "Unité",
-       #     "Prix unitaire", "Total", "Mode de paiement", "Catégorie"
-        #])
-    # Télécharger les données du fichier CSV dans Google Sheets
-    SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID'
-    RANGE_NAME = 'Sheet1!A1:I'
-    if st.button("Sauvegarder sur Google Sheets"):
-        sheet.clear()  # Effacer les données existantes
-        sheet.update([df_achats.columns.values.tolist()] + df_achats.values.tolist())
-        st.success("Les données ont été sauvegardées sur Google Sheets avec succès !")
-        
-    # Reset form fields when the module is opened
-    st.session_state["fournisseur"] = ""
-    st.session_state["produit"] = ""
-    st.session_state["quantite"] = 0.0
-    st.session_state["unite"] = ""
-    st.session_state["prix_unitaire"] = 0.0
-    st.session_state["mode_paiement"] = "Carte bancaire"
-    st.session_state["categorie"] = "Matières premières"
+        ])
     
-   # Formulaire pour ajouter un achat
+    # Formulaire pour ajouter un achat
     with st.form("form_achat"):
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -225,23 +183,23 @@ if module_actif == "Achats":
         submit = st.form_submit_button("Ajouter l'achat")
 
         if submit:
-            if not fournisseur or not produit or quantite == 0 or not unite or prix_unitaire == 0:
+            if not fournisseur or not produit or quantite == 0 or not unite ou prix_unitaire == 0:
                 st.error("Tous les champs doivent être remplis pour ajouter un achat.")
             else:
-                nouvel_achat = [
-                    str(date_achat), fournisseur, produit, quantite, unite,
-                    prix_unitaire, total, mode_paiement, categorie
-                ]
-                sheet.values().append(
-                    spreadsheetId=SPREADSHEET_ID,
-                    range=RANGE_NAME,
-                    valueInputOption="RAW",
-                    body={"values": [nouvel_achat]}
-                ).execute()
-                #st.success("Achat ajouté et sauvegardé sur Google Sheets avec succès !")
-                #df_achats = pd.concat([df_achats, pd.DataFrame([nouvel_achat])], ignore_index=True)
-                #df_achats.to_csv(achats_file, index=False)
-                #st.success("Achat ajouté avec succès !")
+                nouvel_achat = {
+                    "Date": str(date_achat),
+                    "Fournisseur": fournisseur,
+                    "Produit": produit,
+                    "Quantité": quantite,
+                    "Unité": unite,
+                    "Prix unitaire": prix_unitaire,
+                    "Total": total,
+                    "Mode de paiement": mode_paiement,
+                    "Catégorie": categorie
+                }
+                df_achats = pd.concat([df_achats, pd.DataFrame([nouvel_achat])], ignore_index=True)
+                df_achats.to_csv(achats_file, index=False)
+                st.success("Achat ajouté avec succès !")
     
     st.markdown("---")
     st.subheader("Historique des achats")
@@ -288,7 +246,7 @@ if module_actif == "Achats":
 
         achat = df_achats.loc[achat_selectionne]
 
-        with st.form("modifier_achat"):
+        with st.form("modifier_supprimer_achat"):
             col1, col2, col3 = st.columns(3)
             with col1:
                 date_achat = st.date_input("Date", value=achat["Date"], key="mod_date_achat")
@@ -317,13 +275,12 @@ if module_actif == "Achats":
                 df_achats.at[achat_selectionne, "Mode de paiement"] = mode_paiement
                 df_achats.at[achat_selectionne, "Catégorie"] = categorie
                 df_achats.to_csv(achats_file, index=False)
-                st.success("Achat modifié avec succès !")
+                st.success("Achat modifié avec succès !")               
 
             if submit_suppression:
                 df_achats = df_achats.drop(achat_selectionne)
                 df_achats.to_csv(achats_file, index=False)
                 st.success("Achat supprimé avec succès !")
-
     else:
         st.info("Aucun achat enregistré pour le moment.")
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
