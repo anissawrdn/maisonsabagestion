@@ -1,6 +1,10 @@
 
 import streamlit as st
 import pandas as pd
+import gspread
+from google.oauth2.service_account import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
 import datetime
 import csv
 import os
@@ -27,6 +31,29 @@ modules = [
 st.sidebar.title("Maison Saba Gestion")
 module_actif = st.sidebar.radio("Aller à :", modules)
 st.title(f"Module : {module_actif}")
+
+# Fonction pour se connecter à Google Sheets
+def connect_to_google_sheets():
+    client_id = os.getenv("GOOGLE_CLIENT_ID")
+    client_secret = os.getenv("GOOGLE_CLIENT_SECRET")
+    redirect_uri = os.getenv("GOOGLE_REDIRECT_URI")
+
+    flow = InstalledAppFlow.from_client_config(
+        {
+            "installed": {
+                "client_id": client_id,
+                "client_secret": client_secret,
+                "redirect_uris": [redirect_uri],
+                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                "token_uri": "https://oauth2.googleapis.com/token"
+            }
+        },
+        scopes=["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
+    )
+    credentials = flow.run_local_server(port=0)
+    service = build('sheets', 'v4', credentials=credentials)
+    return service
+
 
 # Module Ventes
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -138,7 +165,10 @@ if module_actif == "Ventes":
 # Module Achats
 if module_actif == "Achats":
     st.subheader("Enregistrement des achats")
-    achats_file = "achats.csv"
+    service = connect_to_google_sheets()
+    sheet = service.spreadsheets()
+    #st.subheader("Enregistrement des achats")
+    #achats_file = "achats.csv"
     if os.path.exists(achats_file):
         df_achats = pd.read_csv(achats_file)
         df_achats["Date"] = pd.to_datetime(df_achats["Date"], errors="coerce")
@@ -170,7 +200,14 @@ if module_actif == "Achats":
       #      "Date", "Fournisseur", "Produit", "Quantité", "Unité",
        #     "Prix unitaire", "Total", "Mode de paiement", "Catégorie"
         #])
-    
+    # Télécharger les données du fichier CSV dans Google Sheets
+    SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID'
+    RANGE_NAME = 'Sheet1!A1:I'
+    if st.button("Sauvegarder sur Google Sheets"):
+        sheet.clear()  # Effacer les données existantes
+        sheet.update([df_achats.columns.values.tolist()] + df_achats.values.tolist())
+        st.success("Les données ont été sauvegardées sur Google Sheets avec succès !")
+        
     # Reset form fields when the module is opened
     st.session_state["fournisseur"] = ""
     st.session_state["produit"] = ""
@@ -213,9 +250,16 @@ if module_actif == "Achats":
                     "Mode de paiement": mode_paiement,
                     "Catégorie": categorie
                 }
-                df_achats = pd.concat([df_achats, pd.DataFrame([nouvel_achat])], ignore_index=True)
-                df_achats.to_csv(achats_file, index=False)
-                st.success("Achat ajouté avec succès !")
+                sheet.values().append(
+                    spreadsheetId=SPREADSHEET_ID,
+                    range=RANGE_NAME,
+                    valueInputOption="RAW",
+                    body={"values": [nouvel_achat]}
+                ).execute()
+                #st.success("Achat ajouté et sauvegardé sur Google Sheets avec succès !")
+                #df_achats = pd.concat([df_achats, pd.DataFrame([nouvel_achat])], ignore_index=True)
+                #df_achats.to_csv(achats_file, index=False)
+                #st.success("Achat ajouté avec succès !")
     
     st.markdown("---")
     st.subheader("Historique des achats")
