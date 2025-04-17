@@ -172,7 +172,6 @@ if module_actif == "Achats":
         #])
     
     # Reset form fields when the module is opened
-    st.session_state["date_achat"] = datetime.date.today()
     st.session_state["fournisseur"] = ""
     st.session_state["produit"] = ""
     st.session_state["quantite"] = 0.0
