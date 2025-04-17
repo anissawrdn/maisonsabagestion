@@ -141,25 +141,25 @@ if module_actif == "Achats":
     achats_file = "achats.csv"
 
 # Créer un DataFrame vide avec les colonnes requises
-    df_achats = pd.DataFrame(columns=[
-        "Date", "Fournisseur", "Produit", "Quantité", "Unité",
-        "Prix unitaire", "Total", "Mode de paiement", "Catégorie"
-])
+#    df_achats = pd.DataFrame(columns=[
+#        "Date", "Fournisseur", "Produit", "Quantité", "Unité",
+#        "Prix unitaire", "Total", "Mode de paiement", "Catégorie"
+#])
 
 # Sauvegarder le DataFrame vide dans le fichier CSV, ce qui vide son contenu
-    df_achats.to_csv(achats_file, index=False)
+#    df_achats.to_csv(achats_file, index=False)
 
-    print(f"Le contenu de {achats_file} a été vidé avec succès.")
-    st.subheader("Enregistrement des achats")
-    achats_file = "achats.csv"
-    if os.path.exists(achats_file):
-        df_achats = pd.read_csv(achats_file)
-        df_achats["Date"] = pd.to_datetime(df_achats["Date"], errors="coerce")
-    else:
-        df_achats = pd.DataFrame(columns=[
-            "Date", "Fournisseur", "Produit", "Quantité", "Unité",
-            "Prix unitaire", "Total", "Mode de paiement", "Catégorie"
-        ])
+ #   print(f"Le contenu de {achats_file} a été vidé avec succès.")
+  #  st.subheader("Enregistrement des achats")
+   # achats_file = "achats.csv"
+    #if os.path.exists(achats_file):
+     #   df_achats = pd.read_csv(achats_file)
+      #  df_achats["Date"] = pd.to_datetime(df_achats["Date"], errors="coerce")
+    #else:
+     #   df_achats = pd.DataFrame(columns=[
+      #      "Date", "Fournisseur", "Produit", "Quantité", "Unité",
+       #     "Prix unitaire", "Total", "Mode de paiement", "Catégorie"
+        #])
     
     # Formulaire pour ajouter un achat
     with st.form("form_achat"):
