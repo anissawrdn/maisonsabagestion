@@ -157,7 +157,7 @@ if module_actif == "Achats":
             unite = st.text_input("Unité (g, kg, L...)")
             prix_unitaire = st.number_input("Prix unitaire (€)", min_value=0.0, step=0.1)
         mode_paiement = st.selectbox("Mode de paiement", ["Carte bancaire", "Virement", "Chèque", "Espèces", "Autre"])
-        categorie = st.selectbox("Catégorie", ["Matières premières", "Emballages", "Boissons", "Décoration", "Autre"])
+        categorie = st.selectbox("Catégorie", ["Matières premières", "Emballages", "Boissons", "Décoration", "Matériel", "Autre"])
         total = quantite * prix_unitaire
         st.write(f"**Montant total : {total:.2f} €**")
         submit = st.form_submit_button("Ajouter l'achat")
