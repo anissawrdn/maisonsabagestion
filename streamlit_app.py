@@ -6,7 +6,7 @@ import csv
 import os
 import re
 import io
-import plotly.express as px
+import altair as alt
 
 st.set_page_config(page_title="Maison Saba - App de gestion", layout="wide")
 
@@ -197,12 +197,29 @@ if module_actif == "Achats":
 
         st.markdown("---")
         st.subheader("Vue par catégorie")
-        total_par_categorie = df_achats.groupby("Catégorie")["Total"].sum().sort_values(ascending=False)
+        total_par_categorie = df_achats.groupby("Catégorie")["Total"].sum().reset_index()
 
-        # Create a bar chart with totals displayed on top of each bar using plotly
-        fig = px.bar(total_par_categorie, x=total_par_categorie.index, y=total_par_categorie.values, labels={'x': 'Catégorie', 'y': 'Total (€)'}, title='Total des achats par catégorie')
-        fig.update_traces(texttemplate='%{y:.2f} €', textposition='outside')
-        st.plotly_chart(fig)
+        # Create a bar chart with totals displayed on top of each bar using altair
+        chart = alt.Chart(total_par_categorie).mark_bar().encode(
+            x='Catégorie',
+            y='Total',
+            tooltip=['Catégorie', 'Total']
+        ).properties(
+            title='Total des achats par catégorie'
+        ).configure_mark(
+            text=alt.TextConfig(
+                align='center',
+                baseline='middle'
+            )
+        ).mark_text(
+            align='center',
+            baseline='middle',
+            dy=-10  # Nudges text up a bit so it doesn't overlap with the bar
+        ).encode(
+            text='Total:Q'
+        )
+
+        st.altair_chart(chart, use_container_width=True)
     else:
         st.info("Aucun achat enregistré pour le moment.")
 
@@ -253,6 +270,24 @@ if module_actif == "Achats":
                     st.success("Achat supprimé avec succès !")
     else:
         st.info("Aucun achat enregistré pour le moment.")
+Explications des modifications :
+Graphique avec total en euros dépensé pour chaque catégorie :
+
+Utilisation de altair pour créer un graphique avec les montants affichés en haut de chaque barre.
+Boutons pour modifier ou supprimer un achat :
+
+Ajout de boutons "Modifier l'achat" et "Supprimer l'achat" qui affichent les formulaires de modification ou de suppression uniquement lorsqu'ils sont cliqués.
+N'hésitez pas à me dire si vous avez besoin d'autres modifications ou d'assistance supplémentaire !
+
+
+Edit in Pages
+
+
+
+
+
+AI-generated content may be incorrect
+
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Module Stock & Inventaire
 if module_actif == "Stock & Inventaire":
