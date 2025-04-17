@@ -322,8 +322,8 @@ if module_actif == "Stock & Inventaire":
             with open(stock_file, "w") as f:
                 csv.dump(stock_data, f)
             st.success("Ingrédients déduits du stock.")
-    else:
-        st.info("Aucune recette enregistrée.")
+        else:
+            st.info("Aucune recette enregistrée.")
  
 # Module Recettes
 if module_actif == "Recettes":
