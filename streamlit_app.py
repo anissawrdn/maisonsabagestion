@@ -137,7 +137,7 @@ if module_actif == "Ventes":
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Module Achats
 if module_actif == "Achats":
-  st.subheader("Enregistrement des achats")
+    st.subheader("Enregistrement des achats")
     achats_file = "achats.csv"
     if os.path.exists(achats_file):
         df_achats = pd.read_csv(achats_file)
