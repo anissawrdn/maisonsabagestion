@@ -34,10 +34,14 @@ st.title(f"Module : {module_actif}")
 
 # Fonction pour se connecter à Google Sheets
 def connect_to_google_sheets():
+    access_token = os.getenv("GOOGLE_ACCESS_TOKEN")
+    refresh_token = os.getenv("GOOGLE_REFRESH_TOKEN")
     client_id = os.getenv("GOOGLE_CLIENT_ID")
     client_secret = os.getenv("GOOGLE_CLIENT_SECRET")
 
     credentials = Credentials(
+        token=access_token,
+        refresh_token=refresh_token,
         token_uri="https://oauth2.googleapis.com/token",
         client_id=client_id,
         client_secret=client_secret
