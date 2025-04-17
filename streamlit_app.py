@@ -239,17 +239,10 @@ if module_actif == "Achats":
             if not fournisseur or not produit or quantite == 0 or not unite or prix_unitaire == 0:
                 st.error("Tous les champs doivent être remplis pour ajouter un achat.")
             else:
-                nouvel_achat = {
-                    "Date": str(date_achat),
-                    "Fournisseur": fournisseur,
-                    "Produit": produit,
-                    "Quantité": quantite,
-                    "Unité": unite,
-                    "Prix unitaire": prix_unitaire,
-                    "Total": total,
-                    "Mode de paiement": mode_paiement,
-                    "Catégorie": categorie
-                }
+                    nouvel_achat = [
+                    str(date_achat), fournisseur, produit, quantite, unite,
+                    prix_unitaire, total, mode_paiement, categorie
+                ]
                 sheet.values().append(
                     spreadsheetId=SPREADSHEET_ID,
                     range=RANGE_NAME,
