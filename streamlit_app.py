@@ -283,7 +283,7 @@ if module_actif == "Achats":
                 df_achats.at[achat_selectionne, "Catégorie"] = categorie
                 df_achats.to_csv(achats_file, index=False)
                 st.success("Achat modifié avec succès !")
-                # Refresh the table
+        #Refresh the table
                 df_achats = pd.read_csv(achats_file)
                 df_achats["Date"] = pd.to_datetime(df_achats["Date"], errors="coerce")
 
@@ -291,7 +291,7 @@ if module_actif == "Achats":
                 df_achats = df_achats.drop(achat_selectionne)
                 df_achats.to_csv(achats_file, index=False)
                 st.success("Achat supprimé avec succès !")
-                # Refresh the table
+        #Refresh the table
                 df_achats = pd.read_csv(achats_file)
                 df_achats["Date"] = pd.to_datetime(df_achats["Date"], errors="coerce")
     else:
