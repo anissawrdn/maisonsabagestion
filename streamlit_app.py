@@ -201,16 +201,11 @@ if module_actif == "Achats":
 
         # Create a bar chart with totals displayed on top of each bar using altair
         chart = alt.Chart(total_par_categorie).mark_bar().encode(
-            x='Catégorie',
+            x=alt.X('Catégorie', sort=None),
             y='Total',
             tooltip=['Catégorie', 'Total']
         ).properties(
             title='Total des achats par catégorie'
-        ).configure_mark(
-            text=alt.TextConfig(
-                align='center',
-                baseline='middle'
-            )
         ).mark_text(
             align='center',
             baseline='middle',
@@ -269,7 +264,6 @@ if module_actif == "Achats":
                     df_achats.to_csv(achats_file, index=False)
                     st.success("Achat supprimé avec succès !")
     else:
-        st.info("Aucun achat enregistré pour le moment.")
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Module Stock & Inventaire
