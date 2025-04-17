@@ -161,7 +161,7 @@ if module_actif == "Achats":
        #     "Prix unitaire", "Total", "Mode de paiement", "Catégorie"
         #])
     
-    # Formulaire pour ajouter un achat
+   # Formulaire pour ajouter un achat
     with st.form("form_achat"):
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -197,15 +197,6 @@ if module_actif == "Achats":
                 df_achats = pd.concat([df_achats, pd.DataFrame([nouvel_achat])], ignore_index=True)
                 df_achats.to_csv(achats_file, index=False)
                 st.success("Achat ajouté avec succès !")
-                # Reset form fields
-                st.session_state["date_achat"] = datetime.date.today()
-                st.session_state["fournisseur"] = ""
-                st.session_state["produit"] = ""
-                st.session_state["quantite"] = 0.0
-                st.session_state["unite"] = ""
-                st.session_state["prix_unitaire"] = 0.0
-                st.session_state["mode_paiement"] = "Carte bancaire"
-                st.session_state["categorie"] = "Matières premières"
     
     st.markdown("---")
     st.subheader("Historique des achats")
