@@ -284,8 +284,7 @@ if module_actif == "Achats":
                 st.success("Achat modifié avec succès !")
                 st.experimental_rerun()
 
-        if st.button("Supprimer l'achat"):
-            if st.button("Confirmer la suppression"):
+            if submit_suppression:
                 df_achats = df_achats.drop(achat_selectionne)
                 df_achats.to_csv(achats_file, index=False)
                 st.success("Achat supprimé avec succès !")
