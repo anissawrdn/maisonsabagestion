@@ -6,6 +6,7 @@ import csv
 import os
 import re
 import io
+import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Maison Saba - App de gestion", layout="wide")
 
