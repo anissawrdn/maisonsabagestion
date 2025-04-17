@@ -182,25 +182,13 @@ if module_actif == "Achats":
             df_achats.to_csv(achats_file, index=False)
             st.success("Achat ajouté avec succès !")
     
-    st.markdown("---")
-    st.subheader("Historique des achats")
-
-    if not df_achats.empty:
-        df_achats["Date"] = pd.to_datetime(df_achats["Date"])
-        total_achats = df_achats["Total"].sum()
-
-        st.markdown(f"**Montant total des achats :** {total_achats:.2f} €")
-        st.dataframe(df_achats, use_container_width=True)
-
-        csv_export = df_achats.to_csv(index=False).encode('utf-8')
-        st.download_button("Télécharger l'historique (CSV)", data=csv_export, file_name="achats_maison_saba.csv", mime="text/csv")
-
+# Vue par catégorie
         st.markdown("---")
         st.subheader("Vue par catégorie")
         total_par_categorie = df_achats.groupby("Catégorie")["Total"].sum().reset_index()
 
         # Create a bar chart with totals displayed on top of each bar using altair
-        chart = alt.Chart(total_par_categorie).mark_bar().encode(
+        chart = alt.Chart(total_par_categorie).mark_bar(color='sandybrown').encode(
             x=alt.X('Catégorie', sort=None),
             y='Total',
             tooltip=['Catégorie', 'Total']
