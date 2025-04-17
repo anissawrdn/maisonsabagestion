@@ -264,7 +264,7 @@ if module_actif == "Achats":
                     df_achats.to_csv(achats_file, index=False)
                     st.success("Achat supprimé avec succès !")
     else:
-
+        st.info("Aucun achat enregistré pour le moment.")
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Module Stock & Inventaire
 if module_actif == "Stock & Inventaire":
