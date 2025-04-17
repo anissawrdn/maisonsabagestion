@@ -269,6 +269,7 @@ if module_actif == "Achats":
             total = quantite * prix_unitaire
             st.write(f"**Montant total : {total:.2f} €**")
             submit_modification = st.form_submit_button("Modifier l'achat")
+            submit_suppression = st.form_submit_button("Supprimer l'achat")
 
             if submit_modification:
                 df_achats.at[achat_selectionne, "Date"] = str(date_achat)
