@@ -1,4 +1,5 @@
-
+st.cache_data.clear()
+st.cache_resource.clear()
 import streamlit as st
 import pandas as pd
 import datetime
