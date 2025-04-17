@@ -171,6 +171,16 @@ if module_actif == "Achats":
        #     "Prix unitaire", "Total", "Mode de paiement", "Catégorie"
         #])
     
+    # Reset form fields when the module is opened
+    st.session_state["date_achat"] = datetime.date.today()
+    st.session_state["fournisseur"] = ""
+    st.session_state["produit"] = ""
+    st.session_state["quantite"] = 0.0
+    st.session_state["unite"] = ""
+    st.session_state["prix_unitaire"] = 0.0
+    st.session_state["mode_paiement"] = "Carte bancaire"
+    st.session_state["categorie"] = "Matières premières"
+    
    # Formulaire pour ajouter un achat
     with st.form("form_achat"):
         col1, col2, col3 = st.columns(3)
