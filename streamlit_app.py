@@ -137,6 +137,16 @@ if module_actif == "Ventes":
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Module Achats
 if module_actif == "Achats":
+  st.subheader("Enregistrement des achats")
+    achats_file = "achats.csv"
+    if os.path.exists(achats_file):
+        df_achats = pd.read_csv(achats_file)
+        df_achats["Date"] = pd.to_datetime(df_achats["Date"], errors="coerce")
+    else:
+        df_achats = pd.DataFrame(columns=[
+            "Date", "Fournisseur", "Produit", "Quantité", "Unité",
+            "Prix unitaire", "Total", "Mode de paiement", "Catégorie"
+        ])  
     # Définir le nom du fichier
     achats_file = "achats.csv"
 
