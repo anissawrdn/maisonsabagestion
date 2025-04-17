@@ -1,5 +1,4 @@
-st.cache_data.clear()
-st.cache_resource.clear()
+
 import streamlit as st
 import pandas as pd
 import datetime
@@ -8,6 +7,8 @@ import os
 import re
 import io
 import altair as alt
+st.cache_data.clear()
+st.cache_resource.clear()
 
 st.set_page_config(page_title="Maison Saba - App de gestion", layout="wide")
 
