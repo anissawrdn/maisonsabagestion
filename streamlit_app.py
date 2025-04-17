@@ -161,7 +161,7 @@ if module_actif == "Achats":
             unite = st.text_input("Unité (g, kg, L...)")
             prix_unitaire = st.number_input("Prix unitaire (€)", min_value=0.0, step=0.1)
         mode_paiement = st.selectbox("Mode de paiement", ["Carte bancaire", "Virement", "Chèque", "Espèces", "Autre"])
-        categorie = st.selectbox("Catégorie", ["Matières premières", "Emballages", "Boissons", "Décoration", "Matériel", "Autre"])
+        categorie = st.selectbox("Catégorie", ["Matières premières", "Emballages", "Boissons", "Décoration", "Autre"])
         total = quantite * prix_unitaire
         st.write(f"**Montant total : {total:.2f} €**")
         submit = st.form_submit_button("Ajouter l'achat")
@@ -182,7 +182,20 @@ if module_actif == "Achats":
             df_achats.to_csv(achats_file, index=False)
             st.success("Achat ajouté avec succès !")
     
-# Vue par catégorie
+    st.markdown("---")
+    st.subheader("Historique des achats")
+
+    if not df_achats.empty:
+        df_achats["Date"] = pd.to_datetime(df_achats["Date"])
+        total_achats = df_achats["Total"].sum()
+
+        st.markdown(f"**Montant total des achats :** {total_achats:.2f} €")
+        st.dataframe(df_achats, use_container_width=True)
+
+        csv_export = df_achats.to_csv(index=False).encode('utf-8')
+        st.download_button("Télécharger l'historique (CSV)", data=csv_export, file_name="achats_maison_saba.csv", mime="text/csv")
+
+        # Vue par catégorie
         st.markdown("---")
         st.subheader("Vue par catégorie")
         total_par_categorie = df_achats.groupby("Catégorie")["Total"].sum().reset_index()
