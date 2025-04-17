@@ -141,10 +141,10 @@ if module_actif == "Achats":
     achats_file = "achats.csv"
 
 # Créer un DataFrame vide avec les colonnes requises
-    df_achats = pd.DataFrame(columns=[
-        "Date", "Fournisseur", "Produit", "Quantité", "Unité",
-        "Prix unitaire", "Total", "Mode de paiement", "Catégorie"
-])
+    #df_achats = pd.DataFrame(columns=[
+        #"Date", "Fournisseur", "Produit", "Quantité", "Unité",
+        #"Prix unitaire", "Total", "Mode de paiement", "Catégorie"
+#])
 
 # Sauvegarder le DataFrame vide dans le fichier CSV, ce qui vide son contenu
 #    df_achats.to_csv(achats_file, index=False)
