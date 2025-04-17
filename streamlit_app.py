@@ -28,7 +28,7 @@ module_actif = st.sidebar.radio("Aller à :", modules)
 st.title(f"Module : {module_actif}")
 
 # Module Ventes
-
+#----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 if module_actif == "Ventes":
 
     st.subheader("Enregistrement des ventes")
@@ -133,6 +133,7 @@ if module_actif == "Ventes":
             df_ventes.to_csv(ventes_file, index=False)
             st.success("Vente ajoutée avec succès !")
         
+#------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Module Achats
 if module_actif == "Achats":
     st.subheader("Enregistrement des achats")
@@ -263,7 +264,7 @@ if module_actif == "Achats":
                     st.success("Achat supprimé avec succès !")
     else:
         st.info("Aucun achat enregistré pour le moment.")
-        
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Module Stock & Inventaire
 if module_actif == "Stock & Inventaire":
     ventes_file ="ventes.csv"
