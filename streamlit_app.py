@@ -199,33 +199,51 @@ if module_actif == "Achats":
         st.info("Aucun achat enregistré pour le moment.")
         
     st.markdown("---")
-    st.subheader("Supprimer un achat")
-    
-    #produit_supp = st.text_input("Nom du produit à supprimer")
-    
-    #if produit_supp:
-            #filtres=
-       # df_achats[df_achats["Produit"].str.contains(produit_supp, case=False)]
-        
-       # if not filtres.empty:
-           # df_achats["Date"] = pd.to_datetime(df_achats["Date"], errors=("coerce") 
-                                           # Sécurité pour les dates
-        #index_choisi = st.selectbox(
-            #"Sélectionne la ligne à supprimer",
-           # filtres.index,
-            #format_func=lambda i: f"{str(filtres.at[i, 'Date'])} - 
-            #{str(filtres.at[i, 'Produit'])} - {str(filtres.at[i, 'Fournisseur'])}
-        #)
-        
-        #with st.form("form_suppr"):
-        
-            #submit_suppr = st.form_submit_button("Supprimer cette ligne")
-               # if submit_suppr :
-                   # df_achats = df_achats.drop(index_choisi)
-                   # df_achat.to_csv(achats_file, index=False)
-                   # st.success("Achat supprimé avec succès")
-   #else: 
-       # st.warning("Aucun achat trouvé avec ce nom")
+    st.subheader("Modifier ou supprimer un achat")
+
+    if not df_achats.empty:
+        achat_selectionne = st.selectbox("Sélectionner un achat à modifier ou supprimer", df_achats.index, format_func=lambda x: f"{df_achats.at[x, 'Date']} - {df_achats.at[x, 'Produit']} - {df_achats.at[x, 'Fournisseur']}")
+
+        if achat_selectionne is not None:
+            achat = df_achats.loc[achat_selectionne]
+
+            with st.form("modifier_achat"):
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    date_achat = st.date_input("Date", value=achat["Date"])
+                    fournisseur = st.text_input("Fournisseur", value=achat["Fournisseur"])
+                with col2:
+                    produit = st.text_input("Produit ou ingrédient", value=achat["Produit"])
+                    quantite = st.number_input("Quantité", min_value=0.0, step=0.1, value=achat["Quantité"])
+                with col3:
+                    unite = st.text_input("Unité (g, kg, L...)", value=achat["Unité"])
+                    prix_unitaire = st.number_input("Prix unitaire (€)", min_value=0.0, step=0.1, value=achat["Prix unitaire"])
+                mode_paiement = st.selectbox("Mode de paiement", ["Carte bancaire", "Virement", "Chèque", "Espèces", "Autre"], index=["Carte bancaire", "Virement", "Chèque", "Espèces", "Autre"].index(achat["Mode de paiement"]))
+                categorie = st.selectbox("Catégorie", ["Matières premières", "Emballages", "Boissons", "Décoration", "Autre"], index=["Matières premières", "Emballages", "Boissons", "Décoration", "Autre"].index(achat["Catégorie"]))
+                total = quantite * prix_unitaire
+                st.write(f"**Montant total : {total:.2f} €**")
+                submit_modification = st.form_submit_button("Modifier l'achat")
+                submit_suppression = st.form_submit_button("Supprimer l'achat")
+
+                if submit_modification:
+                    df_achats.at[achat_selectionne, "Date"] = str(date_achat)
+                    df_achats.at[achat_selectionne, "Fournisseur"] = fournisseur
+                    df_achats.at[achat_selectionne, "Produit"] = produit
+                    df_achats.at[achat_selectionne, "Quantité"] = quantite
+                    df_achats.at[achat_selectionne, "Unité"] = unite
+                    df_achats.at[achat_selectionne, "Prix unitaire"] = prix_unitaire
+                    df_achats.at[achat_selectionne, "Total"] = total
+                    df_achats.at[achat_selectionne, "Mode de paiement"] = mode_paiement
+                    df_achats.at[achat_selectionne, "Catégorie"] = categorie
+                    df_achats.to_csv(achats_file, index=False)
+                    st.success("Achat modifié avec succès !")
+
+                if submit_suppression:
+                    df_achats = df_achats.drop(achat_selectionne)
+                    df_achats.to_csv(achats_file, index=False)
+                    st.success("Achat supprimé avec succès !")
+    else:
+        st.info("Aucun achat enregistré pour le moment.")
 
 # Module Stock & Inventaire
 if module_actif == "Stock & Inventaire":
