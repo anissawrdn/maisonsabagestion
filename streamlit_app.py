@@ -270,23 +270,6 @@ if module_actif == "Achats":
                     st.success("Achat supprimé avec succès !")
     else:
         st.info("Aucun achat enregistré pour le moment.")
-Explications des modifications :
-Graphique avec total en euros dépensé pour chaque catégorie :
-
-Utilisation de altair pour créer un graphique avec les montants affichés en haut de chaque barre.
-Boutons pour modifier ou supprimer un achat :
-
-Ajout de boutons "Modifier l'achat" et "Supprimer l'achat" qui affichent les formulaires de modification ou de suppression uniquement lorsqu'ils sont cliqués.
-N'hésitez pas à me dire si vous avez besoin d'autres modifications ou d'assistance supplémentaire !
-
-
-Edit in Pages
-
-
-
-
-
-AI-generated content may be incorrect
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Module Stock & Inventaire
