@@ -1,4 +1,4 @@
-
+import requests
 import streamlit as st
 import pandas as pd
 import gspread
@@ -33,21 +33,15 @@ module_actif = st.sidebar.radio("Aller à :", modules)
 st.title(f"Module : {module_actif}")
 
 # Fonction pour se connecter à Google Sheets
-def connect_to_google_sheets():
-    access_token = os.getenv("GOOGLE_ACCESS_TOKEN")
-    refresh_token = os.getenv("GOOGLE_REFRESH_TOKEN")
-    client_id = os.getenv("GOOGLE_CLIENT_ID")
-    client_secret = os.getenv("GOOGLE_CLIENT_SECRET")
-
-    credentials = Credentials(
-        token=access_token,
-        refresh_token=refresh_token,
-        token_uri="https://oauth2.googleapis.com/token",
-        client_id=client_id,
-        client_secret=client_secret
-    )
-    service = build('sheets', 'v4', credentials=credentials)
-    return service
+def get_public_google_sheet(sheet_id, range_name, api_key):
+    url = f"https://sheets.googleapis.com/v4/spreadsheets/{sheet_id}/values/{range_name}?key={api_key}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        return data['values']
+    else:
+        st.error(f"Erreur {response.status_code}: {response.text}")
+        return None
 
 
 # Module Ventes
