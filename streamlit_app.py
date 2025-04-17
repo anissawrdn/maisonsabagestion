@@ -6,7 +6,7 @@ import csv
 import os
 import re
 import io
-import matplotlib.pyplot as plt
+import plotly.express as px
 
 st.set_page_config(page_title="Maison Saba - App de gestion", layout="wide")
 
@@ -199,22 +199,10 @@ if module_actif == "Achats":
         st.subheader("Vue par catégorie")
         total_par_categorie = df_achats.groupby("Catégorie")["Total"].sum().sort_values(ascending=False)
 
-        # Create a bar chart with totals displayed on top of each bar
-        fig, ax = plt.subplots()
-        bars = ax.bar(total_par_categorie.index, total_par_categorie.values)
-        ax.set_ylabel('Total (€)')
-        ax.set_title('Total des achats par catégorie')
-
-        # Add totals on top of each bar
-        for bar in bars:
-            height = bar.get_height()
-            ax.annotate(f'{height:.2f} €',
-                        xy=(bar.get_x() + bar.get_width() / 2, height),
-                        xytext=(0, 3),  # 3 points vertical offset
-                        textcoords="offset points",
-                        ha='center', va='bottom')
-
-        st.pyplot(fig)
+        # Create a bar chart with totals displayed on top of each bar using plotly
+        fig = px.bar(total_par_categorie, x=total_par_categorie.index, y=total_par_categorie.values, labels={'x': 'Catégorie', 'y': 'Total (€)'}, title='Total des achats par catégorie')
+        fig.update_traces(texttemplate='%{y:.2f} €', textposition='outside')
+        st.plotly_chart(fig)
     else:
         st.info("Aucun achat enregistré pour le moment.")
 
