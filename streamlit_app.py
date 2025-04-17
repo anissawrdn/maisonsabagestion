@@ -152,35 +152,47 @@ if module_actif == "Achats":
     with st.form("form_achat"):
         col1, col2, col3 = st.columns(3)
         with col1:
-            date_achat = st.date_input("Date", value=datetime.date.today())
-            fournisseur = st.text_input("Fournisseur")
+            date_achat = st.date_input("Date", value=datetime.date.today(), key="date_achat")
+            fournisseur = st.text_input("Fournisseur", key="fournisseur")
         with col2:
-            produit = st.text_input("Produit ou ingrédient")
-            quantite = st.number_input("Quantité", min_value=0.0, step=0.1)
+            produit = st.text_input("Produit ou ingrédient", key="produit")
+            quantite = st.number_input("Quantité", min_value=0.0, step=0.1, key="quantite")
         with col3:
-            unite = st.text_input("Unité (g, kg, L...)")
-            prix_unitaire = st.number_input("Prix unitaire (€)", min_value=0.0, step=0.1)
-        mode_paiement = st.selectbox("Mode de paiement", ["Carte bancaire", "Virement", "Chèque", "Espèces", "Autre"])
-        categorie = st.selectbox("Catégorie", ["Matières premières", "Emballages", "Boissons", "Décoration", "Autre"])
+            unite = st.text_input("Unité (g, kg, L...)", key="unite")
+            prix_unitaire = st.number_input("Prix unitaire (€)", min_value=0.0, step=0.1, key="prix_unitaire")
+        mode_paiement = st.selectbox("Mode de paiement", ["Carte bancaire", "Virement", "Chèque", "Espèces", "Autre"], key="mode_paiement")
+        categorie = st.selectbox("Catégorie", ["Matières premières", "Emballages", "Boissons", "Décoration", "Autre"], key="categorie")
         total = quantite * prix_unitaire
         st.write(f"**Montant total : {total:.2f} €**")
         submit = st.form_submit_button("Ajouter l'achat")
 
         if submit:
-            nouvel_achat = {
-                "Date": str(date_achat),
-                "Fournisseur": fournisseur,
-                "Produit": produit,
-                "Quantité": quantite,
-                "Unité": unite,
-                "Prix unitaire": prix_unitaire,
-                "Total": total,
-                "Mode de paiement": mode_paiement,
-                "Catégorie": categorie
-            }
-            df_achats = pd.concat([df_achats, pd.DataFrame([nouvel_achat])], ignore_index=True)
-            df_achats.to_csv(achats_file, index=False)
-            st.success("Achat ajouté avec succès !")
+            if not fournisseur or not produit or quantite == 0 or not unite or prix_unitaire == 0:
+                st.error("Tous les champs doivent être remplis pour ajouter un achat.")
+            else:
+                nouvel_achat = {
+                    "Date": str(date_achat),
+                    "Fournisseur": fournisseur,
+                    "Produit": produit,
+                    "Quantité": quantite,
+                    "Unité": unite,
+                    "Prix unitaire": prix_unitaire,
+                    "Total": total,
+                    "Mode de paiement": mode_paiement,
+                    "Catégorie": categorie
+                }
+                df_achats = pd.concat([df_achats, pd.DataFrame([nouvel_achat])], ignore_index=True)
+                df_achats.to_csv(achats_file, index=False)
+                st.success("Achat ajouté avec succès !")
+                # Reset form fields
+                st.session_state["date_achat"] = datetime.date.today()
+                st.session_state["fournisseur"] = ""
+                st.session_state["produit"] = ""
+                st.session_state["quantite"] = 0.0
+                st.session_state["unite"] = ""
+                st.session_state["prix_unitaire"] = 0.0
+                st.session_state["mode_paiement"] = "Carte bancaire"
+                st.session_state["categorie"] = "Matières premières"
     
     st.markdown("---")
     st.subheader("Historique des achats")
@@ -225,39 +237,37 @@ if module_actif == "Achats":
     if not df_achats.empty:
         achat_selectionne = st.selectbox("Sélectionner un achat à modifier ou supprimer", df_achats.index, format_func=lambda x: f"{df_achats.at[x, 'Date']} - {df_achats.at[x, 'Produit']} - {df_achats.at[x, 'Fournisseur']}")
 
-        if achat_selectionne is not None:
-            achat = df_achats.loc[achat_selectionne]
+        achat = df_achats.loc[achat_selectionne]
 
-            if st.button("Modifier l'achat"):
-                with st.form("modifier_achat"):
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-                        date_achat = st.date_input("Date", value=achat["Date"])
-                        fournisseur = st.text_input("Fournisseur", value=achat["Fournisseur"])
-                    with col2:
-                        produit = st.text_input("Produit ou ingrédient", value=achat["Produit"])
-                        quantite = st.number_input("Quantité", min_value=0.0, step=0.1, value=achat["Quantité"])
-                    with col3:
-                        unite = st.text_input("Unité (g, kg, L...)", value=achat["Unité"])
-                        prix_unitaire = st.number_input("Prix unitaire (€)", min_value=0.0, step=0.1, value=achat["Prix unitaire"])
-                    mode_paiement = st.selectbox("Mode de paiement", ["Carte bancaire", "Virement", "Chèque", "Espèces", "Autre"], index=["Carte bancaire", "Virement", "Chèque", "Espèces", "Autre"].index(achat["Mode de paiement"]))
-                    categorie = st.selectbox("Catégorie", ["Matières premières", "Emballages", "Boissons", "Décoration", "Autre"], index=["Matières premières", "Emballages", "Boissons", "Décoration", "Autre"].index(achat["Catégorie"]))
-                    total = quantite * prix_unitaire
-                    st.write(f"**Montant total : {total:.2f} €**")
-                    submit_modification = st.form_submit_button("Modifier l'achat")
+        with st.form("modifier_achat"):
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                date_achat = st.date_input("Date", value=achat["Date"], key="mod_date_achat")
+                fournisseur = st.text_input("Fournisseur", value=achat["Fournisseur"], key="mod_fournisseur")
+            with col2:
+                produit = st.text_input("Produit ou ingrédient", value=achat["Produit"], key="mod_produit")
+                quantite = st.number_input("Quantité", min_value=0.0, step=0.1, value=achat["Quantité"], key="mod_quantite")
+            with col3:
+                unite = st.text_input("Unité (g, kg, L...)", value=achat["Unité"], key="mod_unite")
+                prix_unitaire = st.number_input("Prix unitaire (€)", min_value=0.0, step=0.1, value=achat["Prix unitaire"], key="mod_prix_unitaire")
+            mode_paiement = st.selectbox("Mode de paiement", ["Carte bancaire", "Virement", "Chèque", "Espèces", "Autre"], index=["Carte bancaire", "Virement", "Chèque", "Espèces", "Autre"].index(achat["Mode de paiement"]), key="mod_mode_paiement")
+            categorie = st.selectbox("Catégorie", ["Matières premières", "Emballages", "Boissons", "Décoration", "Autre"], index=["Matières premières", "Emballages", "Boissons", "Décoration", "Autre"].index(achat["Catégorie"]), key="mod_categorie")
+            total = quantite * prix_unitaire
+            st.write(f"**Montant total : {total:.2f} €**")
+            submit_modification = st.form_submit_button("Modifier l'achat")
 
-                    if submit_modification:
-                        df_achats.at[achat_selectionne, "Date"] = str(date_achat)
-                        df_achats.at[achat_selectionne, "Fournisseur"] = fournisseur
-                        df_achats.at[achat_selectionne, "Produit"] = produit
-                        df_achats.at[achat_selectionne, "Quantité"] = quantite
-                        df_achats.at[achat_selectionne, "Unité"] = unite
-                        df_achats.at[achat_selectionne, "Prix unitaire"] = prix_unitaire
-                        df_achats.at[achat_selectionne, "Total"] = total
-                        df_achats.at[achat_selectionne, "Mode de paiement"] = mode_paiement
-                        df_achats.at[achat_selectionne, "Catégorie"] = categorie
-                        df_achats.to_csv(achats_file, index=False)
-                        st.success("Achat modifié avec succès !")
+            if submit_modification:
+                df_achats.at[achat_selectionne, "Date"] = str(date_achat)
+                df_achats.at[achat_selectionne, "Fournisseur"] = fournisseur
+                df_achats.at[achat_selectionne, "Produit"] = produit
+                df_achats.at[achat_selectionne, "Quantité"] = quantite
+                df_achats.at[achat_selectionne, "Unité"] = unite
+                df_achats.at[achat_selectionne, "Prix unitaire"] = prix_unitaire
+                df_achats.at[achat_selectionne, "Total"] = total
+                df_achats.at[achat_selectionne, "Mode de paiement"] = mode_paiement
+                df_achats.at[achat_selectionne, "Catégorie"] = categorie
+                df_achats.to_csv(achats_file, index=False)
+                st.success("Achat modifié avec succès !")
 
             if st.button("Supprimer l'achat"):
                 if st.button("Confirmer la suppression"):
